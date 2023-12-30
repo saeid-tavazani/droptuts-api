@@ -3,6 +3,8 @@ const {
   selectProducts,
   deleteProducts,
   updateProducts,
+  newHeadline,
+  selectHeadline,
 } = require("../models/productsModels");
 const logger = require("../services/errorLogger");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
@@ -110,6 +112,37 @@ exports.updateProducts = (req, res, next) => {
             success: false,
             message: getReasonPhrase(StatusCodes.UPGRADE_REQUIRED),
           });
+        }
+      })
+      .catch((error) => {
+        logger.error(error);
+        res
+          .status(StatusCodes.NOT_IMPLEMENTED)
+          .send({ code: StatusCodes.NOT_IMPLEMENTED, success: false });
+      });
+  } catch (error) {
+    logger.error(error);
+    next(error);
+  }
+};
+
+exports.newHeadline = (req, res, next) => {
+  try {
+    const { title, id } = req.body;
+    newHeadline([id, title])
+      .then((row) => {
+        if (row.affectedRows) {
+          selectHeadline().then((headline) => {
+            res.status(StatusCodes.OK).send({
+              success: true,
+              data: headline,
+              message: getReasonPhrase(StatusCodes.OK),
+            });
+          });
+        } else {
+          res
+            .status(StatusCodes.NOT_IMPLEMENTED)
+            .send({ code: StatusCodes.NOT_IMPLEMENTED, success: false });
         }
       })
       .catch((error) => {

@@ -37,10 +37,16 @@ const newHeadline = async (value) => {
   return rows;
 };
 
+const selectHeadline = async (value) => {
+  const [rows] = await connection.query("SELECT * FROM `headline`", value);
+  return rows;
+};
+
 module.exports = {
   newProducts,
   selectProducts,
   deleteProducts,
   updateProducts,
   newHeadline,
+  selectHeadline,
 };
