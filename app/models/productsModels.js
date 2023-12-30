@@ -29,9 +29,18 @@ const updateProducts = async (value) => {
   return rows;
 };
 
+const newHeadline = async (value) => {
+  const [rows] = await connection.query(
+    "INSERT INTO `headline`(`products_id`, `title`) VALUES (?,?)",
+    value
+  );
+  return rows;
+};
+
 module.exports = {
   newProducts,
   selectProducts,
   deleteProducts,
   updateProducts,
+  newHeadline,
 };
