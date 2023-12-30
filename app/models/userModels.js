@@ -12,7 +12,14 @@ const newUser = async (value) => {
     "INSERT INTO `users`(`full_name`, `email`, `password`) VALUES (?,?,?)",
     value
   );
-  return rows[0];
+  return rows;
+};
+const updateUser = async (value) => {
+  const [rows] = await connection.query(
+    "UPDATE `users` SET `full_name`=?,`email`=?,`password`=? WHERE id=?",
+    value
+  );
+  return rows;
 };
 
-module.exports = { selectUser, newUser };
+module.exports = { selectUser, newUser, updateUser };
