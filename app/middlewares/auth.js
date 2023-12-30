@@ -1,4 +1,4 @@
-const TokenService = require("../services/TokenService");
+const TokenService = require("../services/tokenService");
 
 exports.auth = (req, res, next) => {
   if (!("authorization" in req.headers)) {
