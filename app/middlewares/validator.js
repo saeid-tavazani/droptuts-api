@@ -18,13 +18,11 @@ exports.validator = (validations) => {
     });
   };
 };
-
 exports.idValidator = (location = "body", valid = "id") => {
   return location == "body"
     ? body(valid).trim().toInt().isInt()
     : param(valid).trim().toInt().isInt();
 };
-
 exports.passValidator = (location = "body", valid = "password") => {
   return location == "body"
     ? body(valid).trim().isLength({ min: 8, max: 16 })
@@ -35,11 +33,9 @@ exports.emailValidator = (location = "body", valid = "email") => {
     ? body(valid).trim().isEmail().isLength({ max: 80 })
     : param(valid).trim().isEmail().isLength({ max: 80 });
 };
-
 exports.customMadeValidator = (valid, location = "body") => {
   return location == "body" ? body(valid).trim() : param(valid).trim();
 };
-
 exports.phoneNumberValidator = (
   compulsion,
   location = "body",

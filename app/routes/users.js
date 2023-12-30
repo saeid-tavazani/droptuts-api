@@ -37,7 +37,6 @@ router.put(
   ],
   updateUser
 );
-
 router.delete(
   "/delete",
   [auth, validator([idValidator().notEmpty()])],

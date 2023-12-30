@@ -21,7 +21,6 @@ const updateUser = async (value) => {
   );
   return rows;
 };
-
 const deleteUser = async (value) => {
   const [rows] = await connection.query(
     "DELETE FROM `users` WHERE id=?",

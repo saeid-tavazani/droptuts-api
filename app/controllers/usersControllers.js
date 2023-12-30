@@ -47,7 +47,6 @@ exports.newUser = (req, res, next) => {
     next(error);
   }
 };
-
 exports.updateUser = (req, res, next) => {
   try {
     const { name, email, password, id } = req.body;
@@ -57,9 +56,10 @@ exports.updateUser = (req, res, next) => {
           newUser([name, email, generateHashPss(password)]).then((row) => {
             selectUser([email]).then((user) => {
               delete user.password;
+              const avatar = gravatar(user.email);
               res.status(StatusCodes.OK).send({
                 success: true,
-                data: user,
+                data: { ...user, avatar },
                 message: getReasonPhrase(StatusCodes.OK),
               });
             });
@@ -82,7 +82,6 @@ exports.updateUser = (req, res, next) => {
     next(error);
   }
 };
-
 exports.deleteUser = (req, res, next) => {
   try {
     const { id } = req.body;
