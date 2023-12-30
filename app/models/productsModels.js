@@ -13,4 +13,12 @@ const selectProducts = async (value) => {
   return rows;
 };
 
-module.exports = { newProducts, selectProducts };
+const deleteProducts = async (value) => {
+  const [rows] = await connection.query(
+    "SELECT * FROM `products` WHERE id=?",
+    value
+  );
+  return rows;
+};
+
+module.exports = { newProducts, selectProducts, deleteProducts };
