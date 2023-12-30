@@ -62,6 +62,7 @@ exports.getProducts = (req, res, next) => {
 exports.deleteProducts = (req, res, next) => {
   try {
     const { id } = req.body;
+
     deleteProducts([id])
       .then((row) => {
         if (row.affectedRows) {
@@ -74,8 +75,7 @@ exports.deleteProducts = (req, res, next) => {
           });
         } else {
           res.status(StatusCodes.UPGRADE_REQUIRED).send({
-            success: true,
-            data: products,
+            success: false,
             message: getReasonPhrase(StatusCodes.UPGRADE_REQUIRED),
           });
         }

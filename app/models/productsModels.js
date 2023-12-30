@@ -15,7 +15,7 @@ const selectProducts = async (value) => {
 
 const deleteProducts = async (value) => {
   const [rows] = await connection.query(
-    "SELECT * FROM `products` WHERE id=?",
+    "DELETE FROM `products` WHERE id=?",
     value
   );
   return rows;

@@ -1,9 +1,14 @@
 const express = require("express");
 const { auth } = require("../middlewares/auth");
-const { validator, customMadeValidator } = require("../middlewares/validator");
+const {
+  validator,
+  customMadeValidator,
+  idValidator,
+} = require("../middlewares/validator");
 const {
   newProducts,
   getProducts,
+  deleteProducts,
 } = require("../controllers/productsController");
 
 const router = express.Router();
@@ -23,5 +28,11 @@ router.post(
   newProducts
 );
 router.get("/", getProducts);
+
+router.delete(
+  "/",
+  [auth, validator([idValidator().notEmpty()])],
+  deleteProducts
+);
 
 module.exports = router;
