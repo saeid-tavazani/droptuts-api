@@ -10,6 +10,7 @@ const {
   getProducts,
   deleteProducts,
   updateProducts,
+  newHeadline,
 } = require("../controllers/productsController");
 
 const router = express.Router();
@@ -50,6 +51,18 @@ router.put(
     ]),
   ],
   updateProducts
+);
+
+router.post(
+  "/new/headline",
+  [
+    auth,
+    validator([
+      customMadeValidator("title").notEmpty(),
+      idValidator().notEmpty(),
+    ]),
+  ],
+  newHeadline
 );
 
 module.exports = router;

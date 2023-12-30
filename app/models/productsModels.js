@@ -42,6 +42,22 @@ const selectHeadline = async (value) => {
   return rows;
 };
 
+const deleteHeadline = async (value) => {
+  const [rows] = await connection.query(
+    "DELETE FROM `headline` WHERE id=?",
+    value
+  );
+  return rows;
+};
+
+const updateHeadline = async (value) => {
+  const [rows] = await connection.query(
+    "UPDATE `headline` SET `products_id`=?,`title`=? WHERE id=?",
+    value
+  );
+  return rows;
+};
+
 module.exports = {
   newProducts,
   selectProducts,
@@ -49,4 +65,6 @@ module.exports = {
   updateProducts,
   newHeadline,
   selectHeadline,
+  deleteHeadline,
+  updateHeadline,
 };
