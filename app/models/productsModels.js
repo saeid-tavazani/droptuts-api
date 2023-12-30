@@ -23,7 +23,7 @@ const deleteProducts = async (value) => {
 
 const updateProducts = async (value) => {
   const [rows] = await connection.query(
-    "UPDATE `products` SET `title`=?,`description`=?,`poster`=?,`price`=?,`discount`=? WHERE 1 WHERE id=?",
+    "UPDATE `products` SET `title`=?,`description`=?,`poster`=?,`price`=?,`discount`=? WHERE id=?",
     value
   );
   return rows;

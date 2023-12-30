@@ -94,8 +94,8 @@ exports.deleteProducts = (req, res, next) => {
 
 exports.updateProducts = (req, res, next) => {
   try {
-    const { id } = req.body;
-    updateProducts([id])
+    const { title, description, poster, price, discount, id } = req.body;
+    updateProducts([title, description, poster, price, discount, id])
       .then((row) => {
         if (row.affectedRows) {
           selectProducts().then((products) => {

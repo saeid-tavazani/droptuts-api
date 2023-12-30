@@ -9,6 +9,7 @@ const {
   newProducts,
   getProducts,
   deleteProducts,
+  updateProducts,
 } = require("../controllers/productsController");
 
 const router = express.Router();
@@ -33,6 +34,22 @@ router.delete(
   "/",
   [auth, validator([idValidator().notEmpty()])],
   deleteProducts
+);
+
+router.put(
+  "/new",
+  [
+    auth,
+    validator([
+      customMadeValidator("title").notEmpty(),
+      customMadeValidator("description").notEmpty(),
+      customMadeValidator("poster").notEmpty(),
+      customMadeValidator("price").optional().isInt(),
+      customMadeValidator("discount").optional().isInt(),
+      idValidator().notEmpty(),
+    ]),
+  ],
+  updateProducts
 );
 
 module.exports = router;
