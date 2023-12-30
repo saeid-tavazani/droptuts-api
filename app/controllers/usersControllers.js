@@ -11,7 +11,12 @@ exports.newUser = (req, res, next) => {
     selectUser([email])
       .then((user) => {
         if (!user) {
-          newUser([name, email, generateHashPss(password)]);
+          newUser([name, email, generateHashPss(password)]).then((row) => {
+            res.status(StatusCodes.OK).send({
+              success: true,
+              message: getReasonPhrase(StatusCodes.OK),
+            });
+          });
         } else {
           res.status(StatusCodes.NOT_ACCEPTABLE).send({
             success: false,
