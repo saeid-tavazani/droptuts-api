@@ -22,4 +22,12 @@ const updateUser = async (value) => {
   return rows;
 };
 
-module.exports = { selectUser, newUser, updateUser };
+const deleteUser = async (value) => {
+  const [rows] = await connection.query(
+    "DELETE FROM `users` WHERE id=?",
+    value
+  );
+  return rows;
+};
+
+module.exports = { selectUser, newUser, updateUser, deleteUser };

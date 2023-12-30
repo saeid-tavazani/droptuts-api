@@ -7,7 +7,11 @@ const {
   customMadeValidator,
   idValidator,
 } = require("../middlewares/validator");
-const { newUser, updateUser } = require("../controllers/usersControllers");
+const {
+  newUser,
+  updateUser,
+  deleteUser,
+} = require("../controllers/usersControllers");
 
 const router = express.Router();
 
@@ -32,6 +36,12 @@ router.put(
     ]),
   ],
   updateUser
+);
+
+router.delete(
+  "/delete",
+  [auth, validator([idValidator().notEmpty()])],
+  deleteUser
 );
 
 module.exports = router;

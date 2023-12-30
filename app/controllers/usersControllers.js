@@ -1,6 +1,11 @@
 const TokenService = require("../services/tokenService");
 const { verifyPass, generateHashPss } = require("../services/passwordHash");
-const { selectUser, newUser, updateUser } = require("../models/userModels");
+const {
+  selectUser,
+  newUser,
+  updateUser,
+  deleteUser,
+} = require("../models/userModels");
 const { gravatar } = require("../services/gravatar");
 const logger = require("../services/errorLogger");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
@@ -60,10 +65,39 @@ exports.updateUser = (req, res, next) => {
             });
           });
         } else {
-          res.status(StatusCodes.NOT_ACCEPTABLE).send({
+          res.status(StatusCodes.NOT_MODIFIED).send({
             success: false,
-            message: getReasonPhrase(StatusCodes.NOT_ACCEPTABLE),
+            message: getReasonPhrase(StatusCodes.NOT_MODIFIED),
           });
+        }
+      })
+      .catch((error) => {
+        logger.error(error);
+        res
+          .status(StatusCodes.NOT_IMPLEMENTED)
+          .send({ code: StatusCodes.NOT_IMPLEMENTED, success: false });
+      });
+  } catch (error) {
+    logger.error(error);
+    next(error);
+  }
+};
+
+exports.deleteUser = (req, res, next) => {
+  try {
+    const { id } = req.body;
+    deleteUser([id])
+      .then((row) => {
+        if (row.affectedRows) {
+          res.status(StatusCodes.OK).send({
+            success: true,
+            data: user,
+            message: getReasonPhrase(StatusCodes.OK),
+          });
+        } else {
+          res
+            .status(StatusCodes.NOT_IMPLEMENTED)
+            .send({ code: StatusCodes.NOT_IMPLEMENTED, success: false });
         }
       })
       .catch((error) => {
