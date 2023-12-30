@@ -2,6 +2,7 @@ const {
   newProducts,
   selectProducts,
   deleteProducts,
+  updateProducts,
 } = require("../models/productsModels");
 const logger = require("../services/errorLogger");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
@@ -63,6 +64,38 @@ exports.deleteProducts = (req, res, next) => {
   try {
     const { id } = req.body;
     deleteProducts([id])
+      .then((row) => {
+        if (row.affectedRows) {
+          selectProducts().then((products) => {
+            res.status(StatusCodes.OK).send({
+              success: true,
+              data: products,
+              message: getReasonPhrase(StatusCodes.OK),
+            });
+          });
+        } else {
+          res.status(StatusCodes.UPGRADE_REQUIRED).send({
+            success: false,
+            message: getReasonPhrase(StatusCodes.UPGRADE_REQUIRED),
+          });
+        }
+      })
+      .catch((error) => {
+        logger.error(error);
+        res
+          .status(StatusCodes.NOT_IMPLEMENTED)
+          .send({ code: StatusCodes.NOT_IMPLEMENTED, success: false });
+      });
+  } catch (error) {
+    logger.error(error);
+    next(error);
+  }
+};
+
+exports.updateProducts = (req, res, next) => {
+  try {
+    const { id } = req.body;
+    updateProducts([id])
       .then((row) => {
         if (row.affectedRows) {
           selectProducts().then((products) => {
