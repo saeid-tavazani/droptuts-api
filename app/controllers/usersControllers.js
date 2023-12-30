@@ -46,13 +46,17 @@ exports.newUser = (req, res, next) => {
 exports.updateUser = (req, res, next) => {
   try {
     const { name, email, password, id } = req.body;
-    updateUser([name, email, password, id])
+    updateUser([name, email, generateHashPss(password), id])
       .then((row) => {
         if (row.affectedRows) {
           newUser([name, email, generateHashPss(password)]).then((row) => {
-            res.status(StatusCodes.OK).send({
-              success: true,
-              message: getReasonPhrase(StatusCodes.OK),
+            selectUser([email]).then((user) => {
+              delete user.password;
+              res.status(StatusCodes.OK).send({
+                success: true,
+                data: user,
+                message: getReasonPhrase(StatusCodes.OK),
+              });
             });
           });
         } else {
