@@ -3,6 +3,7 @@ const { verifyPass } = require("../services/passwordHash");
 const { selectUserActive } = require("../models/userModels");
 const { gravatar } = require("../services/gravatar");
 const logger = require("../services/errorLogger");
+
 exports.newSession = (req, res, next) => {
   try {
     const { email, password } = req.body;
