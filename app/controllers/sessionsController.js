@@ -32,8 +32,8 @@ exports.newSession = (req, res, next) => {
           });
         }
       })
-      .catch((err) => {
-        logger.error(err);
+      .catch((error) => {
+        logger.error(error);
         res.send({ code: 501, success: false });
       });
   } catch (error) {
@@ -44,25 +44,30 @@ exports.newSession = (req, res, next) => {
 exports.verifyToken = (req, res, next) => {
   try {
     const data = TokenService.decode(req.headers.authorization);
-    selectUserActive([data.email]).then((user) => {
-      if (data.password === user.password) {
-        delete user.password;
-        const picture = gravatar(data.email);
-        res.send({
-          data: { ...user, ...picture },
-          success: true,
-          code: 200,
-          message: "success",
-        });
-      } else {
-        return res.status(401).send({
-          status: "error",
-          code: 401,
-          message: "Inactive user",
-          success: false,
-        });
-      }
-    });
+    selectUserActive([data.email])
+      .then((user) => {
+        if (data.password === user.password) {
+          delete user.password;
+          const picture = gravatar(data.email);
+          res.send({
+            data: { ...user, ...picture },
+            success: true,
+            code: 200,
+            message: "success",
+          });
+        } else {
+          return res.status(401).send({
+            status: "error",
+            code: 401,
+            message: "Inactive user",
+            success: false,
+          });
+        }
+      })
+      .catch((error) => {
+        logger.error(error);
+        res.send({ code: 501, success: false });
+      });
   } catch (error) {
     logger.error(error);
     next(error);
