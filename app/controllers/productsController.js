@@ -62,7 +62,6 @@ exports.getProducts = (req, res, next) => {
 exports.deleteProducts = (req, res, next) => {
   try {
     const { id } = req.body;
-
     deleteProducts([id])
       .then((row) => {
         if (row.affectedRows) {

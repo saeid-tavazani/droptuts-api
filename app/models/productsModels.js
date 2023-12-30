@@ -21,4 +21,17 @@ const deleteProducts = async (value) => {
   return rows;
 };
 
-module.exports = { newProducts, selectProducts, deleteProducts };
+const updateProducts = async (value) => {
+  const [rows] = await connection.query(
+    "UPDATE `products` SET `title`=?,`description`=?,`poster`=?,`price`=?,`discount`=? WHERE 1 WHERE id=?",
+    value
+  );
+  return rows;
+};
+
+module.exports = {
+  newProducts,
+  selectProducts,
+  deleteProducts,
+  updateProducts,
+};
