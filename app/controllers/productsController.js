@@ -32,3 +32,25 @@ exports.newProducts = (req, res, next) => {
     next(error);
   }
 };
+
+exports.getProducts = (req, res, next) => {
+  try {
+    selectProducts()
+      .then((products) => {
+        res.status(StatusCodes.OK).send({
+          success: true,
+          data: products,
+          message: getReasonPhrase(StatusCodes.OK),
+        });
+      })
+      .catch((error) => {
+        logger.error(error);
+        res
+          .status(StatusCodes.NOT_IMPLEMENTED)
+          .send({ code: StatusCodes.NOT_IMPLEMENTED, success: false });
+      });
+  } catch (error) {
+    logger.error(error);
+    next(error);
+  }
+};
