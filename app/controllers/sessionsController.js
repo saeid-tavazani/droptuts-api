@@ -1,13 +1,13 @@
 const TokenService = require("../services/tokenService");
 const { verifyPass } = require("../services/passwordHash");
-const { selectUserActive } = require("../models/userModels");
+const { selectUser } = require("../models/userModels");
 const { gravatar } = require("../services/gravatar");
 const logger = require("../services/errorLogger");
 
 exports.newSession = (req, res, next) => {
   try {
     const { email, password } = req.body;
-    selectUserActive([email])
+    selectUser([email])
       .then((user) => {
         if (user && verifyPass(password, user.password)) {
           const userPassword = user.password;
@@ -44,7 +44,7 @@ exports.newSession = (req, res, next) => {
 exports.verifyToken = (req, res, next) => {
   try {
     const data = TokenService.decode(req.headers.authorization);
-    selectUserActive([data.email])
+    selectUser([data.email])
       .then((user) => {
         if (data.password === user.password) {
           delete user.password;
