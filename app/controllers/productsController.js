@@ -222,3 +222,4 @@ exports.updateHeadline = (req, res, next) => {
     next(error);
   }
 };
+

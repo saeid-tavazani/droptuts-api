@@ -58,6 +58,38 @@ const updateHeadline = async (value) => {
   return rows;
 };
 
+const newSection = async (value) => {
+  const [rows] = await connection.query(
+    "INSERT INTO `section`(`headline_id`, `title`, `description`, `time`) VALUES (?,?,?,?)",
+    value
+  );
+  return rows;
+};
+
+const selectSection = async (value) => {
+  const [rows] = await connection.query(
+    "SELECT * FROM `section` WHERE headline_id=?",
+    value
+  );
+  return rows;
+};
+
+const updateSection = async (value) => {
+  const [rows] = await connection.query(
+    "UPDATE `section` SET `title`=?,`description`=?,`time`=? WHERE id=?",
+    value
+  );
+  return rows;
+};
+
+const deleteSection = async (value) => {
+  const [rows] = await connection.query(
+    "DELETE FROM `section` WHERE WHERE id=?",
+    value
+  );
+  return rows;
+};
+
 module.exports = {
   newProducts,
   selectProducts,
@@ -67,4 +99,8 @@ module.exports = {
   selectHeadline,
   deleteHeadline,
   updateHeadline,
+  newSection,
+  selectSection,
+  updateSection,
+  deleteSection,
 };
