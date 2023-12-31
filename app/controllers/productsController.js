@@ -7,6 +7,10 @@ const {
   selectHeadline,
   deleteHeadline,
   updateHeadline,
+  deleteSection,
+  selectSection,
+  newSection,
+  updateSection,
 } = require("../models/productsModels");
 const logger = require("../services/errorLogger");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
@@ -223,3 +227,96 @@ exports.updateHeadline = (req, res, next) => {
   }
 };
 
+// ?********************************
+exports.newSection = (req, res, next) => {
+  try {
+    const { title, id, description, time } = req.body;
+    newSection([id, title, description, time])
+      .then((row) => {
+        if (row.affectedRows) {
+          selectSection([id]).then((headline) => {
+            res.status(StatusCodes.OK).send({
+              success: true,
+              data: headline,
+              message: getReasonPhrase(StatusCodes.OK),
+            });
+          });
+        } else {
+          res
+            .status(StatusCodes.NOT_IMPLEMENTED)
+            .send({ code: StatusCodes.NOT_IMPLEMENTED, success: false });
+        }
+      })
+      .catch((error) => {
+        logger.error(error);
+        res
+          .status(StatusCodes.NOT_IMPLEMENTED)
+          .send({ code: StatusCodes.NOT_IMPLEMENTED, success: false });
+      });
+  } catch (error) {
+    logger.error(error);
+    next(error);
+  }
+};
+
+exports.deleteSection = (req, res, next) => {
+  try {
+    const { id } = req.body;
+    deleteSection([id])
+      .then((row) => {
+        if (row.affectedRows) {
+          res.status(StatusCodes.OK).send({
+            success: true,
+            data: headline,
+            message: getReasonPhrase(StatusCodes.OK),
+          });
+        } else {
+          res.status(StatusCodes.UPGRADE_REQUIRED).send({
+            success: false,
+            message: getReasonPhrase(StatusCodes.UPGRADE_REQUIRED),
+          });
+        }
+      })
+      .catch((error) => {
+        logger.error(error);
+        res
+          .status(StatusCodes.NOT_IMPLEMENTED)
+          .send({ code: StatusCodes.NOT_IMPLEMENTED, success: false });
+      });
+  } catch (error) {
+    logger.error(error);
+    next(error);
+  }
+};
+
+exports.updateSection = (req, res, next) => {
+  try {
+    const { title, id, description, time } = req.body;
+    updateSection([title, description, time, id])
+      .then((row) => {
+        if (row.affectedRows) {
+          selectSection([id]).then((headline) => {
+            res.status(StatusCodes.OK).send({
+              success: true,
+              data: headline,
+              message: getReasonPhrase(StatusCodes.OK),
+            });
+          });
+        } else {
+          res.status(StatusCodes.UPGRADE_REQUIRED).send({
+            success: false,
+            message: getReasonPhrase(StatusCodes.UPGRADE_REQUIRED),
+          });
+        }
+      })
+      .catch((error) => {
+        logger.error(error);
+        res
+          .status(StatusCodes.NOT_IMPLEMENTED)
+          .send({ code: StatusCodes.NOT_IMPLEMENTED, success: false });
+      });
+  } catch (error) {
+    logger.error(error);
+    next(error);
+  }
+};
