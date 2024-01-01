@@ -1,7 +1,7 @@
 const express = require("express");
 const { auth } = require("../middlewares/auth");
 const { validator, idValidator } = require("../middlewares/validator");
-const { newProducts } = require("../controllers/orderController");
+const { newOrders, getOrders } = require("../controllers/orderController");
 
 const router = express.Router();
 
@@ -14,7 +14,9 @@ router.post(
       idValidator("body", "productId").notEmpty(),
     ]),
   ],
-  newProducts
+  newOrders
 );
 
-router.get("/", [auth, validator([idValidator().notEmpty()])], newProducts);
+router.get("/", [auth, validator([idValidator().notEmpty()])], getOrders);
+
+module.exports = router;

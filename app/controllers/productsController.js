@@ -197,7 +197,7 @@ exports.deleteHeadline = (req, res, next) => {
 
 exports.updateHeadline = (req, res, next) => {
   try {
-    const { title, description, poster, price, discount, id } = req.body;
+    const { title, id } = req.body;
     updateHeadline([id, title])
       .then((row) => {
         if (row.affectedRows) {
@@ -214,6 +214,28 @@ exports.updateHeadline = (req, res, next) => {
             message: getReasonPhrase(StatusCodes.UPGRADE_REQUIRED),
           });
         }
+      })
+      .catch((error) => {
+        logger.error(error);
+        res
+          .status(StatusCodes.NOT_IMPLEMENTED)
+          .send({ code: StatusCodes.NOT_IMPLEMENTED, success: false });
+      });
+  } catch (error) {
+    logger.error(error);
+    next(error);
+  }
+};
+
+exports.selectHeadline = (req, res, next) => {
+  try {
+    selectHeadline()
+      .then((headline) => {
+        res.status(StatusCodes.OK).send({
+          success: true,
+          data: headline,
+          message: getReasonPhrase(StatusCodes.OK),
+        });
       })
       .catch((error) => {
         logger.error(error);

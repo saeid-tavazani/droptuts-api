@@ -11,6 +11,12 @@ const {
   deleteProducts,
   updateProducts,
   newHeadline,
+  updateSection,
+  deleteSection,
+  newSection,
+  updateHeadline,
+  deleteHeadline,
+  selectHeadline,
 } = require("../controllers/productsController");
 
 const router = express.Router();
@@ -38,7 +44,7 @@ router.delete(
 );
 
 router.put(
-  "/new",
+  "/",
   [
     auth,
     validator([
@@ -54,7 +60,7 @@ router.put(
 );
 
 router.post(
-  "/new/headline",
+  "/headline/new",
   [
     auth,
     validator([
@@ -64,5 +70,25 @@ router.post(
   ],
   newHeadline
 );
+
+router.delete(
+  "/headline/delete",
+  [auth, validator([idValidator().notEmpty()])],
+  deleteHeadline
+);
+
+router.put(
+  "/headline/update",
+  [
+    auth,
+    validator([
+      customMadeValidator("title").notEmpty(),
+      idValidator().notEmpty(),
+    ]),
+  ],
+  updateHeadline
+);
+
+router.get("/headline", [auth], selectHeadline);
 
 module.exports = router;
