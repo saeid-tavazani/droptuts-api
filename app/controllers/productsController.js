@@ -227,7 +227,6 @@ exports.updateHeadline = (req, res, next) => {
   }
 };
 
-// ?********************************
 exports.newSection = (req, res, next) => {
   try {
     const { title, id, description, time } = req.body;
