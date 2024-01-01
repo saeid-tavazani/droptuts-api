@@ -10,9 +10,11 @@ router.post(
   [
     auth,
     validator([
-      idValidator("body", "userId"),
-      idValidator("body", "productId"),
+      idValidator("body", "userId").notEmpty(),
+      idValidator("body", "productId").notEmpty(),
     ]),
   ],
   newProducts
 );
+
+router.get("/", [auth, validator([idValidator().notEmpty()])], newProducts);
