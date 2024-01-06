@@ -26,7 +26,7 @@ const activeComment = async (value) => {
 
 const getComment = async (value) => {
   const [rows] = await connection.query(
-    "SELECT * FROM `comment` INNER JOIN `users` ON users.id = comment.user_id INNER JOIN `comment` c ON c.parent_comment = comment.id  WHERE comment.products_id=1 GROUP BY comment.id",
+    "SELECT * FROM `comment` INNER JOIN `users` ON users.id = comment.user_id INNER JOIN `comment` c ON c.parent_comment = comment.id  WHERE comment.products_id=? GROUP BY comment.id",
     value
   );
   return rows;
