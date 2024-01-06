@@ -1,7 +1,17 @@
 const express = require("express");
 const { auth } = require("../middlewares/auth");
-const { validator, idValidator } = require("../middlewares/validator");
-const { newOrders, getOrders } = require("../controllers/orderController");
+const {
+  validator,
+  idValidator,
+  customMadeValidator,
+} = require("../middlewares/validator");
+const {
+  activeComment,
+  deleteComment,
+  addreplyComment,
+  getComment,
+  newComment,
+} = require("../controllers/commentController");
 
 const router = express.Router();
 
@@ -12,12 +22,24 @@ router.post(
     validator([
       idValidator("body", "userId").notEmpty(),
       idValidator("body", "productId").notEmpty(),
+      customMadeValidator("description"),
     ]),
   ],
-  newOrders
+  newComment
 );
 
-router.get("/", [auth, validator([idValidator().notEmpty()])], getOrders);
-router.delete("/", [auth, validator([idValidator().notEmpty()])], getOrders);
+router.get("/", [auth, validator([idValidator().notEmpty()])], getComment);
+
+router.delete(
+  "/",
+  [auth, validator([idValidator().notEmpty()])],
+  deleteComment
+);
+router.put("/", [auth, validator([idValidator().notEmpty()])], activeComment);
+router.post(
+  "/reply",
+  [auth, validator([idValidator().notEmpty()])],
+  addreplyComment
+);
 
 module.exports = router;
