@@ -1,4 +1,8 @@
-const { newOrders, selectOrders } = require("../models/orderModels");
+const {
+  newOrders,
+  selectOrders,
+  deleteOrders,
+} = require("../models/orderModels");
 const logger = require("../services/errorLogger");
 const { StatusCodes, getReasonPhrase } = require("http-status-codes");
 
@@ -41,6 +45,28 @@ exports.getOrders = (req, res, next) => {
         res.status(StatusCodes.OK).send({
           success: true,
           data: order,
+          message: getReasonPhrase(StatusCodes.OK),
+        });
+      })
+      .catch((error) => {
+        logger.error(error);
+        res
+          .status(StatusCodes.NOT_IMPLEMENTED)
+          .send({ code: StatusCodes.NOT_IMPLEMENTED, success: false });
+      });
+  } catch (error) {
+    logger.error(error);
+    next(error);
+  }
+};
+
+exports.deleteOrders = (req, res, next) => {
+  try {
+    const { id } = req.body;
+    deleteOrders([id])
+      .then((order) => {
+        res.status(StatusCodes.OK).send({
+          success: true,
           message: getReasonPhrase(StatusCodes.OK),
         });
       })

@@ -18,5 +18,6 @@ router.post(
 );
 
 router.get("/", [auth, validator([idValidator().notEmpty()])], getOrders);
+router.delete("/", [auth, validator([idValidator().notEmpty()])], getOrders);
 
 module.exports = router;
