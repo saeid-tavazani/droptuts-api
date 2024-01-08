@@ -106,10 +106,10 @@ exports.updateProducts = (req, res, next) => {
     updateProducts([title, description, poster, price, discount, id])
       .then((row) => {
         if (row.affectedRows) {
-          selectProducts().then((products) => {
+          selectProducts().then((user) => {
             res.status(StatusCodes.OK).send({
               success: true,
-              data: products,
+              data: user,
               message: getReasonPhrase(StatusCodes.OK),
             });
           });
@@ -121,12 +121,18 @@ exports.updateProducts = (req, res, next) => {
         }
       })
       .catch((error) => {
+        console.log("====================================");
+        console.log(error);
+        console.log("====================================");
         logger.error(error);
         res
           .status(StatusCodes.NOT_IMPLEMENTED)
           .send({ code: StatusCodes.NOT_IMPLEMENTED, success: false });
       });
   } catch (error) {
+    console.log("====================================");
+    console.log(error);
+    console.log("====================================");
     logger.error(error);
     next(error);
   }
