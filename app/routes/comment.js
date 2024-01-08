@@ -36,9 +36,18 @@ router.delete(
   deleteComment
 );
 router.put("/", [auth, validator([idValidator().notEmpty()])], activeComment);
+
 router.post(
   "/reply",
-  [auth, validator([idValidator().notEmpty()])],
+  [
+    auth,
+    validator([
+      idValidator("body", "userId").notEmpty(),
+      idValidator("body", "productId").notEmpty(),
+      idValidator("body", "commentId").notEmpty(),
+      customMadeValidator("description"),
+    ]),
+  ],
   addreplyComment
 );
 
