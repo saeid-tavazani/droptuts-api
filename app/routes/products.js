@@ -17,6 +17,7 @@ const {
   updateHeadline,
   deleteHeadline,
   selectHeadline,
+  selectSection,
 } = require("../controllers/productsController");
 
 const router = express.Router();
@@ -90,5 +91,41 @@ router.put(
 );
 
 router.get("/headline", [auth], selectHeadline);
+
+router.post(
+  "/section/new",
+  [
+    auth,
+    validator([
+      customMadeValidator("title").notEmpty(),
+      idValidator().notEmpty(),
+      customMadeValidator("description").notEmpty(),
+      customMadeValidator("time").notEmpty(),
+    ]),
+  ],
+  newSection
+);
+
+router.delete(
+  "/section/delete",
+  [auth, validator([idValidator().notEmpty()])],
+  deleteSection
+);
+
+router.put(
+  "/section/update",
+  [
+    auth,
+    validator([
+      customMadeValidator("title").notEmpty(),
+      idValidator().notEmpty(),
+      customMadeValidator("description").notEmpty(),
+      customMadeValidator("time").notEmpty(),
+    ]),
+  ],
+  updateSection
+);
+
+router.get("/section", [auth], selectSection);
 
 module.exports = router;

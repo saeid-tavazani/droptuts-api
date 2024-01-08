@@ -347,3 +347,25 @@ exports.updateSection = (req, res, next) => {
     next(error);
   }
 };
+
+exports.selectSection = (req, res, next) => {
+  try {
+    selectSection([id])
+      .then((headline) => {
+        res.status(StatusCodes.OK).send({
+          success: true,
+          data: headline,
+          message: getReasonPhrase(StatusCodes.OK),
+        });
+      })
+      .catch((error) => {
+        logger.error(error);
+        res
+          .status(StatusCodes.NOT_IMPLEMENTED)
+          .send({ code: StatusCodes.NOT_IMPLEMENTED, success: false });
+      });
+  } catch (error) {
+    logger.error(error);
+    next(error);
+  }
+};
